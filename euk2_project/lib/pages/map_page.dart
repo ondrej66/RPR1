@@ -19,8 +19,8 @@ class _MapPageState extends State<MapPage> {
   Location currentLocation = Location();
   Set<Marker> markers = Set();
 
-  //zobrazení aktuální pozice uživatele
-  void getLocation() async {
+  ///zobrazení aktuální pozice uživatele
+  Future<void> getCurrentLocation() async {
     currentLocation.onLocationChanged.listen((LocationData loc) {
       _controller?.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -76,8 +76,6 @@ class _MapPageState extends State<MapPage> {
           title: 'Hypermarket Kaufland',
           snippet: 'WC',
         ),
-        icon: BitmapDescriptor.defaultMarker,
-        //icon: markerbitmap, //Icon for Marker
       ),
     );
   }
@@ -88,7 +86,7 @@ class _MapPageState extends State<MapPage> {
 
     setState(() {
       getMarkers();
-      getLocation();
+      getCurrentLocation();
     });
   }
 

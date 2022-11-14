@@ -16,5 +16,10 @@ ThemeData yellowTheme = ThemeData(
 
 
 ThemeData darkTheme = ThemeData(
+  primarySwatch: Colors.amber,
   brightness: Brightness.dark,
+
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: Colors.amber,
+  ),
 );
