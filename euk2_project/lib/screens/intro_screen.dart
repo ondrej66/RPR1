@@ -103,7 +103,7 @@ class IntroScreen extends StatelessWidget {
     );
   }
 
-  void onDone(context) async {
+  void onDone(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('ON_BOARDING', false);
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainScreen()));

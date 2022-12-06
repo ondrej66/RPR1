@@ -1,6 +1,7 @@
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:euk2_project/icon_management/icon_manager.dart';
 import 'package:euk2_project/locations/location_data_test.dart';
+import 'package:euk2_project/pages/popup_window.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -62,10 +63,12 @@ class _MapPageState extends State<MapPage> {
             icon: await getMarkerIconByType(EUKLocationType.wc),
             onTap: () {
               _customInfoWindowController.addInfoWindow!(
-                buildPopupWindow(
+                EUKPopupWindow(
                   address: 'Veřejné WC u železniční stanice',
                   city: 'Hradec nad Moravicí',
                   ZIP: '747 41',
+                  region: '',
+                  info: '',
                   imageURL:
                       'https://g.denik.cz/74/9d/op-hradec-nad-moravici-toalety0205_denik-630-16x9.jpg',
                 ),
@@ -82,10 +85,12 @@ class _MapPageState extends State<MapPage> {
             icon: await getMarkerIconByType(EUKLocationType.hospital),
             onTap: () {
               _customInfoWindowController.addInfoWindow!(
-                buildPopupWindow(
+                EUKPopupWindow(
                   address: 'Slezská nemocnice Opava',
                   city: 'Opava',
                   ZIP: '746 01',
+                  region: '',
+                  info: '',
                   imageURL:
                       'http://polar.cz/data/gallery/modules/polar/news/articles/videos/20200319151335_301/715x402.jpg?ver=20200319151525',
                 ),
@@ -101,10 +106,12 @@ class _MapPageState extends State<MapPage> {
             icon: await getMarkerIconByType(EUKLocationType.platform),
             onTap: () {
               _customInfoWindowController.addInfoWindow!(
-                buildPopupWindow(
+                EUKPopupWindow(
                   address: 'Státní zámek',
                   city: 'Hradec nad Moravicí',
                   ZIP: '747 41',
+                  region: '',
+                  info: '',
                   imageURL:
                       'https://www.historickasidla.cz/galerie/obrazky/imager.php?img=542938&x=1000&y=664&hash=6619ef2c0cb8b6992c4e7fd2c699bb43',
                 ),
@@ -120,10 +127,12 @@ class _MapPageState extends State<MapPage> {
             icon: await getMarkerIconByType(EUKLocationType.none),
             onTap: () {
               _customInfoWindowController.addInfoWindow!(
-                buildPopupWindow(
+                EUKPopupWindow(
                   address: 'Nepřiřazená lokace',
                   city: 'Hradec nad Moravicí',
                   ZIP: '747 41',
+                  region: '',
+                  info: '',
                   imageURL: '',
                 ),
                 const LatLng(49.88051393727233, 17.878107236492742),
@@ -134,63 +143,6 @@ class _MapPageState extends State<MapPage> {
       }
       setState(() {});
     }
-  }
-
-  Widget buildPopupWindow({
-    String city = 'Unknown City',
-    String ZIP = 'XXXXX',
-    String address = 'Unknown Address',
-    String imageURL = '',
-  }) {
-    return Container(
-      width: 300,
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 300,
-            height: 100,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(imageURL),
-                fit: BoxFit.fitWidth,
-                filterQuality: FilterQuality.high,
-              ),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10.0),
-              ),
-              color: Colors.red,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            child: SizedBox(
-              child: Text(
-                address,
-                maxLines: 2,
-                softWrap: false,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-            ),
-            // widget.data!.date!
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            child: Text(
-              '$city, $ZIP',
-              maxLines: 2,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -219,7 +171,8 @@ class _MapPageState extends State<MapPage> {
                 children: [
                   const CircleAvatar(
                     backgroundImage: NetworkImage(
-                        'https://play-lh.googleusercontent.com/S0gCtkUxcS1LOC6V2ZqJvVD5lfdTTfSIagePsauBAcLLo-6kGNhoMwgadLRUXyr00jLa=w280-h280'),
+                      'https://play-lh.googleusercontent.com/S0gCtkUxcS1LOC6V2ZqJvVD5lfdTTfSIagePsauBAcLLo-6kGNhoMwgadLRUXyr00jLa=w280-h280',
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
@@ -227,9 +180,10 @@ class _MapPageState extends State<MapPage> {
                   const Text(
                     'EuroKlíčenka 2.0',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -265,12 +219,13 @@ class _MapPageState extends State<MapPage> {
               Navigator.of(context).pop();
 
               _customInfoWindowController.addInfoWindow!(
-                buildPopupWindow(
+                EUKPopupWindow(
                   address: 'Státní zámek',
                   city: 'Hradec nad Moravicí',
                   ZIP: '747 41',
-                  imageURL:
-                      'https://www.historickasidla.cz/galerie/obrazky/imager.php?img=542938&x=1000&y=664&hash=6619ef2c0cb8b6992c4e7fd2c699bb43',
+                  region: '',
+                  info: '',
+                  imageURL: 'https://www.historickasidla.cz/galerie/obrazky/imager.php?img=542938&x=1000&y=664&hash=6619ef2c0cb8b6992c4e7fd2c699bb43',
                 ),
                 const LatLng(49.8758258, 17.8759750),
               );
@@ -284,12 +239,13 @@ class _MapPageState extends State<MapPage> {
               _goToTrainStation();
               Navigator.of(context).pop();
               _customInfoWindowController.addInfoWindow!(
-                buildPopupWindow(
+                EUKPopupWindow(
                   address: 'Veřejné WC u železniční stanice',
                   city: 'Hradec nad Moravicí',
                   ZIP: '747 41',
-                  imageURL:
-                      'https://g.denik.cz/74/9d/op-hradec-nad-moravici-toalety0205_denik-630-16x9.jpg',
+                  region: '',
+                  info: '',
+                  imageURL: 'https://g.denik.cz/74/9d/op-hradec-nad-moravici-toalety0205_denik-630-16x9.jpg',
                 ),
                 const LatLng(49.8701600, 17.8791761),
               );
@@ -304,12 +260,13 @@ class _MapPageState extends State<MapPage> {
               _goToHospital();
               Navigator.of(context).pop();
               _customInfoWindowController.addInfoWindow!(
-                buildPopupWindow(
+                EUKPopupWindow(
                   address: 'Slezská nemocnice Opava',
                   city: 'Opava',
                   ZIP: '746 01',
-                  imageURL:
-                      'http://polar.cz/data/gallery/modules/polar/news/articles/videos/20200319151335_301/715x402.jpg?ver=20200319151525',
+                  region: '',
+                  info: '',
+                  imageURL: 'http://polar.cz/data/gallery/modules/polar/news/articles/videos/20200319151335_301/715x402.jpg?ver=20200319151525',
                 ),
                 const LatLng(49.9337922, 17.8793431),
               );
